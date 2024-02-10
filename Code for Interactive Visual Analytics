@@ -1,3 +1,4 @@
+#Bar Chart
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -7,4 +8,12 @@ sns.countplot(x="Launch Site", data=spacex_df)
 plt.title("Launch Site Distribution")
 plt.xlabel("Launch Site")
 plt.ylabel("Count")
+plt.show()
+
+#boxplot
+plt.figure(figsize=(12, 8))
+sns.boxplot(x="Booster Version Category", y="Payload Mass (kg)", data=spacex_df)
+plt.title("Payload Mass vs. Booster Version Category")
+plt.xlabel("Booster Version Category")
+plt.ylabel("Payload Mass (kg)")
 plt.show()
