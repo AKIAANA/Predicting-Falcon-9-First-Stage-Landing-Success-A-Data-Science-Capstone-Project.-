@@ -1,0 +1,14 @@
+# Web Scraping Code
+import requests
+from bs4 import BeautifulSoup
+
+url = "https://en.wikipedia.org/wiki/List_of_Falcon_9_and_Falcon_Heavy_launches"
+response = requests.get(url)
+soup = BeautifulSoup(response.text, 'html.parser')
+
+# Extracting Launch Schedule Data
+launch_schedule = []
+for launch in soup.find_all('div', class_='launch-event'):
+    mission_name = launch.find('h3').text
+    launch_date = launch.find('p', class_='launch-date').text
+    launch_schedule.append({'Mission_Name': mission_name, 'Launch_Date': launch_date})
