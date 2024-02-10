@@ -1,0 +1,10 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+spacex_df = pd.read_csv("spacex_launch_dash.csv")
+plt.figure(figsize=(10, 6))
+sns.countplot(x="Launch Site", data=spacex_df)
+plt.title("Launch Site Distribution")
+plt.xlabel("Launch Site")
+plt.ylabel("Count")
+plt.show()
