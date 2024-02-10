@@ -1,0 +1,22 @@
+import pandas as pd
+import folium
+from geopy.geocoders import Nominatim
+
+# Load SpaceX launch data
+df = pd.read_csv("spacex_launch_dash.csv")
+
+# Initialize geocoder
+geolocator = Nominatim(user_agent="spacex_map")
+
+# Create a Folium Map centered at a default location
+spacex_map = folium.Map(location=[0, 0], zoom_start=2)
+
+# Add markers for each launch site
+for index, row in df.iterrows():
+    location = geolocator.geocode(row['Launch Site'])
+    if location:
+        folium.Marker([location.latitude, location.longitude],
+                      popup=f"Launch Site: {row['Launch Site']}\nPayload Mass: {row['Payload Mass (kg)']} kg").add_to(spacex_map)
+
+# Save the map to an HTML file
+spacex_map.save("spacex_launch_map.html")
