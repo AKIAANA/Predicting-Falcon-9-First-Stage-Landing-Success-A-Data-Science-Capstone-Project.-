@@ -1,0 +1,33 @@
+import pandas as pd
+
+# Data Collection
+# Reading data from the 'spacex_launch_dash.csv' file
+df = pd.read_csv("spacex_launch_dash.csv")
+
+# Display basic information about the DataFrame
+print("Initial Data Overview:")
+print(df.info())
+
+# Data Wrangling
+# Example: Cleaning and transforming data
+
+# Handling missing values
+df.dropna(inplace=True)  # Remove rows with missing values
+
+# Encoding categorical variables
+df['Launch Site'] = df['Launch Site'].astype('category').cat.codes
+df['Booster Version'] = df['Booster Version'].astype('category').cat.codes
+df['Booster Version Category'] = df['Booster Version Category'].astype('category').cat.codes
+
+# Drop unnecessary columns
+columns_to_drop = ['Unnamed: 0']
+df.drop(columns=columns_to_drop, inplace=True)
+
+# Display the cleaned and transformed DataFrame
+print("\nCleaned and Transformed Data:")
+print(df.head())
+
+# Save the cleaned data to a new CSV file
+cleaned_file_path = "cleaned_data.csv"
+df.to_csv(cleaned_file_path, index=False)
+print(f"\nCleaned data saved to {cleaned_file_path}")
