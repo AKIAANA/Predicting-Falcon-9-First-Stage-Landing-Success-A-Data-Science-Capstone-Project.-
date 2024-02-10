@@ -1,0 +1,6 @@
+plt.figure(figsize=(10, 6))
+sns.scatterplot(x="Flight Number", y="Payload Mass (kg)", data=spacex_df)
+plt.title("Flight Number vs. Payload Mass")
+plt.xlabel("Flight Number")
+plt.ylabel("Payload Mass (kg)")
+plt.show()
