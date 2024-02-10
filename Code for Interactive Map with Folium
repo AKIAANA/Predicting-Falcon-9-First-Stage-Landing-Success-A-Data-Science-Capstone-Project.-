@@ -1,0 +1,39 @@
+import pandas as pd
+import folium
+from geopy.geocoders import Nominatim
+from geopy.exc import GeocoderTimedOut
+from IPython.display import IFrame, display
+
+# Load SpaceX launch data
+df = pd.read_csv("spacex_launch_dash.csv")
+
+# Initialize geocoder
+geolocator = Nominatim(user_agent="spacex_map")
+
+# Create a Folium Map centered at a default location
+my_map = folium.Map(location=[0, 0], zoom_start=2)
+
+def geocode_launch_site(site_name):
+    try:
+        location = geolocator.geocode(site_name)
+        if location:
+            return [location.latitude, location.longitude]
+        else:
+            return None
+    except GeocoderTimedOut:
+        # Retry in case of a timeout
+        return geocode_launch_site(site_name)
+
+# Add markers for each launch site
+for index, row in df.iterrows():
+    location_coords = geocode_launch_site(row['Launch Site'])
+    if location_coords:
+        folium.Marker(location_coords, popup=row['Launch Site']).add_to(my_map)
+
+# Save the map to an HTML file
+my_map.save("interactive_map.html")
+
+# Display the map in the notebook using IFrame
+map_html_path = "interactive_map.html"
+map_display = IFrame(src=map_html_path, width='70%', height=300)
+display(map_display)
