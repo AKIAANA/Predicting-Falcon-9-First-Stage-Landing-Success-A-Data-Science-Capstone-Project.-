@@ -1,0 +1,36 @@
+pip install pandasql
+
+#data overview
+import pandas as pd
+import pandasql as psql
+
+# Load SpaceX launch data
+df = pd.read_csv("spacex_launch_dash.csv")
+
+# Print initial data overview
+print("Initial Data Overview:")
+print(df.info())
+
+# Perform EDA with SQL queries
+eda_query1 = '''
+    SELECT "Launch Site", COUNT(*) AS Launch_Count
+    FROM df
+    GROUP BY "Launch Site";
+'''
+
+eda_query2 = '''
+    SELECT class, AVG("Payload Mass (kg)") AS Avg_Payload_Mass
+    FROM df
+    GROUP BY class;
+'''
+
+# Execute EDA queries
+launch_counts = psql.sqldf(eda_query1, locals())
+avg_payload_mass = psql.sqldf(eda_query2, locals())
+
+# Display results
+print("\nLaunch Counts by Launch Site:")
+print(launch_counts)
+
+print("\nAverage Payload Mass by Launch Outcome:")
+print(avg_payload_mass)
